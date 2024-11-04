@@ -6,7 +6,7 @@ Requires `ffmpeg` to be installed.
 
 See also [my quick ffmpeg cheat sheet](https://gist.github.com/Orangestar12/a6593a093d8728a268a799ff9003d815)
 
-# `[gifit](gifit)`
+# [`gifit`](gifit)
 
 Converts a video into a gif file. Uses the simple method from [this guide](https://github.com/cyburgee/ffmpeg-guide).
 
@@ -18,7 +18,7 @@ gifit input.mp4 output.gif
 
 If the output filename is not specified, then the output will be named `output.gif`.
 
-# `[trim](trim)`
+# [`trim`](trim)
 
 Trims a file into an MP4 clip.
 
