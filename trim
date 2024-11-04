@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Trims a video based on arguments.
+# syntax: filename seek_time [trim_time] [output]
+
+rnum='^[0-9:]+$'
+
+if [[ $# -lt 2 ]]; then
+  echo "Proper syntax:"
+  echo "  filename seek_time"
+  echo "  filename seek_time trim_time"
+  echo "  filename seek_time output"
+  echo "  filename seek_time trim_time output"
+  echo "Please supply at least 2 arguments."
+  echo "If no output is supplied, filename will be \"./output.mp4\""
+  echo "If the third argument is not a number, then the output time will be undefined."
+  echo ""
+  echo "seek_time and trim_time should be the timestamp of the video, not a duration."
+  exit 1
+fi
+
+OT=-1
+FN='./output.mp4'
+
+if [[ $# -eq 2 ]]; then
+  echo "Filename is $FN";
+fi
+
+if [[ $# -eq 3 ]]; then
+  if [[ $3 =~ $rnum ]]; then
+    FN=$3
+    echo "Filename is $FN"
+  else
+    OT=$3
+    echo "Interpreted $OT as end time."
+  fi
+fi
+
+if [[ $# -eq 4 ]]; then
+  OT=$3;
+  FN=$4;
+fi
+
+if [[ $OT -lt 0 ]]; then
+    ffmpeg -ss "$2" -i "$1" -c:v h264_nvenc -c:a aac $FN
+else
+    ffmpeg -ss "$2" -to "$OT" -i "$1" -c:v h264_nvenc -c:a aac $FN
+fi
