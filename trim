@@ -42,7 +42,13 @@ if [[ $# -eq 4 ]]; then
 fi
 
 if [[ $OT -lt 0 ]]; then
-    ffmpeg -ss "$2" -i "$1" -c:v h264_nvenc -c:a aac $FN
+    if ! ffmpeg -ss "$2" -i "$1" -c:v h264_nvenc -c:a aac $FN; then
+      # fall back if no nvenc
+      ffmpeg -ss "$2" -i "$1" -c:v libx264 -c:a aac $FN;
+    fi
 else
-    ffmpeg -ss "$2" -to "$OT" -i "$1" -c:v h264_nvenc -c:a aac $FN
+    if ! ffmpeg -ss "$2" -to "$OT" -i "$1" -c:v h264_nvenc -c:a aac $FN; then
+      # fall back if no nvenc
+      ffmpeg -ss "$2" -i "$1" -c:v libx264 -c:a aac $FN;
+    fi
 fi
